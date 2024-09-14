@@ -206,5 +206,45 @@ mod color_tests {
             let scheme = ColorScheme::from_gogh(&dracula_gogh).unwrap();
             assert_eq!(scheme.to_yaml(), dracula_alacritty);
         }
+
+        #[test]
+        fn convert_iterm_toml() {
+            let dracula_iterm = read_fixture("tests/fixtures/Dracula.itermcolors");
+            let dracula_alacritty_toml: String = "# Default colors
+[colors.primary]
+background = '0x1e1f28'
+foreground = '0xf8f8f2'
+
+# Cursor colors
+[colors.cursor]
+text =   '0xffffff'
+cursor = '0xbbbbbb'
+
+# Normal colors
+[colors.normal]
+black =   '0x000000'
+red =     '0xff5555'
+green =   '0x50fa7b'
+yellow =  '0xf1fa8c'
+blue =    '0xbd93f9'
+magenta = '0xff79c6'
+cyan =    '0x8be9fd'
+white =   '0xbbbbbb'
+
+# Bright colors
+[colors.bright]
+black =   '0x555555'
+red =     '0xff5555'
+green =   '0x50fa7b'
+yellow =  '0xf1fa8c'
+blue =    '0xbd93f9'
+magenta = '0xff79c6'
+cyan =    '0x8be9fd'
+white =   '0xffffff'
+"
+            .to_string();
+            let scheme = ColorScheme::from_iterm(&dracula_iterm).unwrap();
+            assert_eq!(scheme.to_toml(), dracula_alacritty_toml);
+        }
     }
 }

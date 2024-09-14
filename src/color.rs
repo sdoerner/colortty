@@ -383,6 +383,72 @@ impl ColorScheme {
         )
     }
 
+    // output toml that can be used as a color theme in alacritty `.toml` themes.
+    pub fn to_toml(&self) -> String {
+        let cursor_colors = match (&self.cursor_text, &self.cursor) {
+            (Some(cursor_text), Some(cursor)) => format!(
+                "
+# Cursor colors
+[colors.cursor]
+text =   '{}'
+cursor = '{}'
+",
+                cursor_text.to_hex(),
+                cursor.to_hex()
+            ),
+            _ => String::new(),
+        };
+
+        format!(
+            "# Default colors
+[colors.primary]
+background = '{}'
+foreground = '{}'
+{}
+# Normal colors
+[colors.normal]
+black =   '{}'
+red =     '{}'
+green =   '{}'
+yellow =  '{}'
+blue =    '{}'
+magenta = '{}'
+cyan =    '{}'
+white =   '{}'
+
+# Bright colors
+[colors.bright]
+black =   '{}'
+red =     '{}'
+green =   '{}'
+yellow =  '{}'
+blue =    '{}'
+magenta = '{}'
+cyan =    '{}'
+white =   '{}'
+",
+            self.background.to_hex(),
+            self.foreground.to_hex(),
+            cursor_colors,
+            self.black.to_hex(),
+            self.red.to_hex(),
+            self.green.to_hex(),
+            self.yellow.to_hex(),
+            self.blue.to_hex(),
+            self.magenta.to_hex(),
+            self.cyan.to_hex(),
+            self.white.to_hex(),
+            self.bright_black.to_hex(),
+            self.bright_red.to_hex(),
+            self.bright_green.to_hex(),
+            self.bright_yellow.to_hex(),
+            self.bright_blue.to_hex(),
+            self.bright_magenta.to_hex(),
+            self.bright_cyan.to_hex(),
+            self.bright_white.to_hex(),
+        )
+    }
+
     // Show all colors in one line
     pub fn to_preview(&self) -> String {
         let colors = vec![

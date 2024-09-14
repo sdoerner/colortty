@@ -68,7 +68,7 @@ fn convert(args: Vec<String>) -> Result<()> {
     let output_format = matches
         .opt_str("o")
         .and_then(|s| AlacrittyConfigFormat::from_string(&s))
-        .unwrap_or(AlacrittyConfigFormat::Yaml);
+        .unwrap_or(AlacrittyConfigFormat::Toml);
 
     let mut buffer = String::new();
     if source == "-" {
@@ -89,8 +89,7 @@ fn convert(args: Vec<String>) -> Result<()> {
     }?;
     let output = match output_format {
         AlacrittyConfigFormat::Yaml => scheme.to_yaml(),
-        // TODO: Output in toml.
-        AlacrittyConfigFormat::Toml => scheme.to_yaml(),
+        AlacrittyConfigFormat::Toml => scheme.to_toml(),
     };
     println!("{}", output);
 
@@ -179,6 +178,9 @@ USAGE:
     colortty convert -i iterm some-color-theme
     colortty convert -i mintty some-color-theme
     colortty convert -i gogh some-color-theme
+
+    # Convert to YAML (Alacritty < v0.13)
+    colortty convert -o yaml some-color-theme
 
     # Convert stdin (explicit input type is necessary)
     cat some-color-theme | colortty convert -i iterm -
